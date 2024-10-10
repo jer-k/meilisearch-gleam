@@ -1,6 +1,8 @@
 //// Module containing all the error types defined by Meilisearch.
 //// See [Status codes and Meilisearch errors](https://www.meilisearch.com/docs/reference/errors/overview) for more information.
 
+import decode.{type Decoder}
+
 import meilisearch/error_code.{type ErrorCode}
 import meilisearch/error_type.{type ErrorType}
 
@@ -22,11 +24,30 @@ import meilisearch/error_type.{type ErrorType}
 /// code	Meilisearch Error Code. See [Error codes](https://www.meilisearch.com/docs/reference/errors/error_codes)
 /// error_type	Type of error returned. See [Errors](https://www.meilisearch.com/docs/reference/errors/overview#errors)
 /// link	Link to the relevant section of the documentation
-pub type MeilisearchError {
+pub type Error {
   MeilisearchError(
     message: String,
     code: ErrorCode,
     error_type: ErrorType,
     link: String,
   )
+}
+
+pub fn error_decoder() -> Decoder(Error) {
+  decode.into({
+    use message <- decode.parameter
+    use code <- decode.parameter
+    use error_type <- decode.parameter
+    use link <- decode.parameter
+    MeilisearchError(
+      message: message,
+      code: code,
+      error_type: error_type,
+      link: link,
+    )
+  })
+  |> decode.field("message", decode.string)
+  |> decode.field("code", error_code.error_code_decoder())
+  |> decode.field("type", error_type.error_type_decoder())
+  |> decode.field("link", decode.string)
 }
