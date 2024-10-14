@@ -1,23 +1,35 @@
-import gleam/http.{Get, Post}
+import gleam/http
 import gleam/http/request.{type Request, Request}
 import gleam/option.{None, Some}
 import meilisearch/client.{type Client}
 import meilisearch/version
 
 pub fn get(client: Client, path: String) -> Request(String) {
-  let base_request =
-    base_request(path, client)
-    |> set_headers(client)
-
-  Request(..base_request, method: Get)
+  base_request(path, client)
+  |> set_headers(client)
+  |> request.set_method(http.Get)
 }
 
-pub fn post(client: Client, path: String) {
+pub fn post(client: Client, path: String, body: String) {
+  base_request(path, client)
+  |> set_headers(client)
+  |> request.set_body(body)
+  |> request.set_method(http.Post)
+}
+
+pub fn patch(client: Client, path: String, body: String) {
+  base_request(path, client)
+  |> set_headers(client)
+  |> request.set_body(body)
+  |> request.set_method(http.Patch)
+}
+
+pub fn delete(client: Client, path: String) {
   let base_request =
     base_request(path, client)
     |> set_headers(client)
 
-  Request(..base_request, method: Post)
+  Request(..base_request, method: http.Delete)
 }
 
 fn base_request(path: String, client: Client) -> Request(String) {
