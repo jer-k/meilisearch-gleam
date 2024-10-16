@@ -1,4 +1,4 @@
-import gleam/option.{type Option, None, Some}
+import gleam/option.{type Option}
 
 /// Client is the basic type used to make requests. Client should be initialized with client.new and provided
 /// with the desired pagination options via `with_pagination`.

@@ -35,17 +35,17 @@ pub fn task_decoder() {
       finished_at: finished_at,
     )
   })
-  |> decode.field("uid", decode.int)
+  |> decode.field("uid", decode.optional(decode.int))
   |> decode.field("indexUid", decode.optional(decode.string))
   |> decode.field("type", task_type_decoder())
   |> decode.field("status", task_status_decoder())
   |> decode.field("cancelledBy", decode.optional(decode.int))
-  |> decode.field("details", task_details_decoder())
+  |> decode.field("details", decode.optional(task_details_decoder()))
   |> decode.field("error", decode.optional(error.error_decoder()))
-  |> decode.field("duration", decode.string)
+  |> decode.field("duration", decode.optional(decode.string))
   |> decode.field("enqueuedAt", decode.string)
-  |> decode.field("startedAt", decode.string)
-  |> decode.field("finishedAt", decode.string)
+  |> decode.field("startedAt", decode.optional(decode.string))
+  |> decode.field("finishedAt", decode.optional(decode.string))
 }
 
 pub fn task_type_decoder() -> Decoder(TaskType) {

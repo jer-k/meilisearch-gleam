@@ -1,5 +1,3 @@
-import gleam/option.{Some}
-
 pub fn main() {
   todo
   //let resquest = list.request()

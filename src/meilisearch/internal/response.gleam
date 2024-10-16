@@ -4,8 +4,6 @@ import gleam/http/response.{type Response}
 import gleam/json
 import meilisearch/error.{type Error}
 
-import gleam/io
-
 pub type MeilisearchListResponse(a) {
   MeilisearchListResponse(results: List(a), offset: Int, limit: Int, total: Int)
 }
@@ -22,11 +20,9 @@ pub fn handle_response(
   decoder: Decoder(a),
 ) -> Result(a, MeilisearchResponseError) {
   case response.status {
-    200 -> {
+    status if status >= 200 && status < 300 -> {
       case decode_body(response.body) {
         Ok(decoded_body) -> {
-          io.debug("decoded_body ~~~")
-          io.debug(decoded_body)
           case object_decoder(decoded_body, decoder) {
             Ok(record) -> Ok(record)
             Error(err) -> Error(err)
@@ -54,8 +50,6 @@ pub fn handle_list_response(response: Response(String), decoder: Decoder(a)) {
     200 -> {
       case decode_body(response.body) {
         Ok(decoded_body) -> {
-          io.debug("decoded_body ~~~")
-          io.debug(decoded_body)
           case list_decoder(decoded_body, decoder) {
             Ok(list) -> Ok(list)
             Error(err) -> Error(err)

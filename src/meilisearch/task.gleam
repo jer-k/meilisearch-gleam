@@ -3,17 +3,17 @@ import meilisearch/error.{type Error}
 
 pub type Task {
   Task(
-    uid: Int,
-    index_uid: Option(String),
     task_type: TaskType,
     status: TaskStatus,
-    cancelled_by: Option(Int),
-    details: TaskDetails,
-    error: Option(Error),
-    duration: String,
     enqueued_at: String,
-    started_at: String,
-    finished_at: String,
+    uid: Option(Int),
+    index_uid: Option(String),
+    cancelled_by: Option(Int),
+    details: Option(TaskDetails),
+    error: Option(Error),
+    duration: Option(String),
+    started_at: Option(String),
+    finished_at: Option(String),
   )
 }
 
