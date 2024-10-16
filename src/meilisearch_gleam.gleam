@@ -1,12 +1,8 @@
-import gleam/httpc
-import gleam/io
-import meilisearch/index
-import meilisearch/response.{MeilisearchListResponse, MeilisearchResponse}
-
 import gleam/option.{Some}
 
 pub fn main() {
   todo
+  //let resquest = list.request()
   // let request = index.fetch_info("books")
   // //let request = index.indexes()
   // let res = httpc.send(request)

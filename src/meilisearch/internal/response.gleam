@@ -6,8 +6,7 @@ import meilisearch/error.{type Error}
 
 import gleam/io
 
-pub type MeilisearchResponse(a) {
-  MeilisearchResponse(body: a)
+pub type MeilisearchListResponse(a) {
   MeilisearchListResponse(results: List(a), offset: Int, limit: Int, total: Int)
 }
 
@@ -21,7 +20,7 @@ pub type MeilisearchResponseError {
 pub fn handle_response(
   response: Response(String),
   decoder: Decoder(a),
-) -> Result(MeilisearchResponse(a), MeilisearchResponseError) {
+) -> Result(a, MeilisearchResponseError) {
   case response.status {
     200 -> {
       case decode_body(response.body) {
@@ -29,7 +28,7 @@ pub fn handle_response(
           io.debug("decoded_body ~~~")
           io.debug(decoded_body)
           case object_decoder(decoded_body, decoder) {
-            Ok(record) -> Ok(MeilisearchResponse(record))
+            Ok(record) -> Ok(record)
             Error(err) -> Error(err)
           }
         }
@@ -99,7 +98,7 @@ fn object_decoder(
 fn list_decoder(
   body: Dynamic,
   decoder: Decoder(a),
-) -> Result(MeilisearchResponse(a), MeilisearchResponseError) {
+) -> Result(MeilisearchListResponse(a), MeilisearchResponseError) {
   let list_decoder =
     decode.into({
       use results <- decode.parameter
