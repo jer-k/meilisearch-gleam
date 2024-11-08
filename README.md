@@ -1,5 +1,9 @@
 # meilisearch_gleam
 
+## Paused Work
+
+I paused working on this for the time being. I'll hopefully return to it at some point, but no promises.
+
 ## About
 
 I was looking to learn a bit more about Gleam and I saw the
